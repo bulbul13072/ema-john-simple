@@ -1,24 +1,15 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { getDatabaseCart, removeFromDatabaseCart, processOrder } from '../../utilities/databaseManager';
-import fakeData from '../../fakeData';
+import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager';
 import ReviewItem from '../ReviewItem/ReviewItem';
 import Cart from '../cart/Cart';
-import thumbsUp from '../../images/giphy.gif';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Login/useAuth';
 
 const Review = () => {
     const [cart, setCart] = useState([]);
-    const [orderPlaced, setOrderPlaced] = useState(false);
     const auth = useAuth();
-
-    const handlePlaceOrder = () => {
-        setCart([]);
-        setOrderPlaced(true);
-        processOrder();
-    }
 
 const removeProduct = (productKey) => {
     const newCart = cart.filter(pd => pd.key !== productKey);
@@ -26,22 +17,28 @@ const removeProduct = (productKey) => {
     removeFromDatabaseCart(productKey);
 }
 
-    useEffect(()=> {
-        //cart
-        const savedCart = getDatabaseCart();
-        const productKeys = Object.keys(savedCart);
-        const cartProducts= productKeys.map(key => {
-            const product = fakeData.find(pd => pd.key===key);
+useEffect(()=>{
+    //cart
+    const savedCart = getDatabaseCart();
+    const productKeys = Object.keys(savedCart);
+    fetch('http://localhost:3000/getProductByKey', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productKeys)
+      })
+    .then(res => res.json())
+    .then(data => {
+        const cartProducts =  productKeys.map( key => {
+            const product = data.find( pd => pd.key === key);
             product.quantity = savedCart[key];
             return product;
-
         });
         setCart(cartProducts);
-    }, []);
-    let thankYou;
-    if (orderPlaced){
-            thankYou = <div> <img src={thumbsUp} alt=""/> <h1> Siriya Ati Bandhiliso </h1> </div>
-    }
+    })
+    
+}, []);
     return (
         <div className="twin-container">
             <div className="product-container">
@@ -50,9 +47,6 @@ const removeProduct = (productKey) => {
                         key = {pd.key}
                         removeProduct = {removeProduct}
                         product={pd}></ReviewItem>)
-                }
-                {
-                    thankYou
                 }
                 {
                     !cart.length && <h1>You haven't added anything yet <a href="/">Add Items To cart</a></h1>

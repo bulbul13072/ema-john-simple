@@ -1,18 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee, faShippingCart, faShoppingCart} from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart} from '@fortawesome/free-solid-svg-icons'
 import './Products.css';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-  } from "react-router-dom";
-
+import {Link} from "react-router-dom";
 
 
 const Products = (props) => {
-    // console.log(props);
     const { img, name, seller, price, stock, key } = props.product;
     return (
         <div className="product">

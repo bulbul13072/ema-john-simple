@@ -6,7 +6,6 @@ import useAuth from '../../components/Login/useAuth';
 
 const Header = () => {
     const auth = useAuth();
-    console.log(auth.user);
 
 
     return (
@@ -15,7 +14,7 @@ const Header = () => {
             <nav>
                 <a href="/shop">Shop</a>
                 <a href="/review">Review</a>
-                <a href="/inventory">Manage Inventory</a>
+                <a href="/inventory">Inventory</a>
                 {
                     auth.user && <span style={{color: 'white'}}>Welcome {auth.user.name}!</span>
 }
