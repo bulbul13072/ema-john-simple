@@ -1,8 +1,9 @@
 .twin-container{
     display: flex;
+    background-image: linear-gradient(45deg, lightgray, gray,);
 }
 .product-container{
-    width: 70%;
+    width: 80%;
     margin-right: 5px;
     margin-left: 20px;
     border-right: 1px solid lightgray;

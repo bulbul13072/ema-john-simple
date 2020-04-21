@@ -8,6 +8,15 @@
 .product-name{
     color: BLUE;
     font-weight: 400;
+    margin-left: 60px;
+}
+.product-name a{
+    text-decoration: none;
+    color: darkgreen;
+}
+
+.product-name a:hover{
+    color: blue;
 }
 .main-button{
     background-color: goldenrod;

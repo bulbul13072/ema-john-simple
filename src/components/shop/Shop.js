@@ -8,11 +8,18 @@ import {Link} from 'react-router-dom';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState([]);                
+    const shuffle = a => {
+        for (let i = a.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+    };
     useEffect(()=> {
         fetch('http://localhost:3000/products')
         .then(res => res.json())
         .then(data => {
+            shuffle(data);
             setProducts(data);
         })
     }, []);
@@ -53,21 +60,23 @@ const handleAddProduct = (product) => {
         <div className="twin-container">
             <div className="product-container">
         
-                {
-                products.map (pd => <Products
-                    key = {pd.key}
-                    handleAddProduct = {handleAddProduct}
-                    showAddToCart = {true}
-                    product={pd}></Products>)
+            {
+                    products.map(pd => <Products 
+                        key={pd.key}
+                        showAddToCart={true}
+                        handleAddProduct = {handleAddProduct}
+                        product={pd}
+                        ></Products>)
                 }
-    
         </div>
-        <div className="cart-container">
-            <Cart cart={cart}>
-                <Link to='/review'>
-                     <button className="main-button"> Review Order </button>
-                </Link>
-            </Cart>
+        <div className="float-container">
+            <div className="cart-container">
+                <Cart cart={cart}>
+                    <Link to='/review'>
+                        <button className="main-button"> Review Order </button>
+                    </Link>
+                </Cart>
+            </div>
         </div>
 
 
